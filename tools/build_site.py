@@ -12,17 +12,17 @@ PAGES = ["home", "programmes", "pakistan", "questions", "platform", "governance"
          "research", "about", "people", "news", "contact"]
 FILE = {p: ("index.html" if p == "home" else f"{p}.html") for p in PAGES}
 TITLES = {
-    "home": "LydiaRx — Sovereign genomics, delivered",
-    "programmes": "Programmes in motion — LydiaRx",
-    "pakistan": "Pakistan National Genome Programme — LydiaRx",
-    "questions": "Questions governments ask — LydiaRx",
-    "platform": "Platform — LydiaRx",
-    "governance": "Governance — LydiaRx",
-    "research": "Research access — LydiaRx",
-    "about": "About — LydiaRx",
-    "people": "The people — LydiaRx",
-    "news": "News — LydiaRx",
-    "contact": "Contact — LydiaRx",
+    "home": "LydiaRx | Sovereign genomics, delivered",
+    "programmes": "Programmes in motion | LydiaRx",
+    "pakistan": "Pakistan National Genome Programme | LydiaRx",
+    "questions": "Questions governments ask | LydiaRx",
+    "platform": "Platform | LydiaRx",
+    "governance": "Governance | LydiaRx",
+    "research": "Research access | LydiaRx",
+    "about": "About | LydiaRx",
+    "people": "The people | LydiaRx",
+    "news": "News | LydiaRx",
+    "contact": "Contact | LydiaRx",
 }
 # Which page each in-page anchor lives on
 anchor_page = {}
@@ -37,7 +37,7 @@ style = soup.find("style")
 css = style.string
 css = css.replace(".page{ display:none; } .page.active{ display:block; }", "")
 open(os.path.join(out, "assets", "site.css"), "w", encoding="utf-8").write(
-    "/* LydiaRx site styles — derived from website v3 prototype */\n" + css.strip() + "\n")
+    "/* LydiaRx site styles, derived from the website v3 prototype */\n" + css.strip() + "\n")
 
 # ---- strip prototype-only material ------------------------------------
 for el in soup.select("div.slate"):
@@ -71,9 +71,9 @@ if form:
     panel = BeautifulSoup(
         '<div class="form" style="border-top:0;padding-top:0">'
         '<h3>Write to us</h3>'
-        '<p>Email <a href="mailto:hello@lydiarx.com">hello@lydiarx.com</a> and tell us which of these you are '
-        '— a government or public institution, a funder or research partner, a pharmaceutical or biotechnology '
-        'company, a research institution, or press. A briefing is with a founder; we reply within two working days.</p>'
+        '<p>Email <a href="mailto:hello@lydiarx.com">hello@lydiarx.com</a>. Tell us who you are: a government or public '
+        'institution, a funder or research partner, a pharmaceutical or biotechnology company, a research institution, '
+        'or press. A briefing is with a founder. We reply within two working days.</p>'
         '<a class="btn" href="mailto:hello@lydiarx.com?subject=Briefing%20request">Email us</a></div>',
         "html.parser")
     form.replace_with(panel)
