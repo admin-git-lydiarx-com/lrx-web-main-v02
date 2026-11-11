@@ -1,4 +1,4 @@
-/* LydiaRx site styles — derived from website v3 prototype */
+/* LydiaRx site styles, derived from the website v3 prototype */
 :root{ --navy:#0D2438; --teal:#1F6F78; --lteal:#7CCBD2; --mist:#EEF4F5; --line:#C9D5D9; --ink:#1B262E; --grey:#5B6B74; --bg:#FFFFFF; --gate:#8A4B00; --gate-bg:#FFF4E5; box-sizing:border-box; }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --navy:#E3ECF1; --teal:#7CCBD2; --mist:#132B3A; --line:#2F4855; --ink:#E6EEF2; --grey:#A9B8C0; --bg:#0B1A24; --gate:#F3B76A; --gate-bg:#2A2110; } }
 :root[data-theme="dark"]{ --navy:#E3ECF1; --teal:#7CCBD2; --mist:#132B3A; --line:#2F4855; --ink:#E6EEF2; --grey:#A9B8C0; --bg:#0B1A24; --gate:#F3B76A; --gate-bg:#2A2110; }
