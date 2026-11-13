@@ -71,7 +71,7 @@ if form:
     panel = BeautifulSoup(
         '<div class="form" style="border-top:0;padding-top:0">'
         '<h3>Write to us</h3>'
-        '<p>Email <a href="mailto:hello@lydiarx.com">hello@lydiarx.com</a>. Tell us who you are: a government or public '
+        '<p>Use the button below to email us. Tell us who you are: a government or public '
         'institution, a funder or research partner, a pharmaceutical or biotechnology company, a research institution, '
         'or press. A briefing is with a founder. We reply within two working days.</p>'
         '<a class="btn" href="mailto:hello@lydiarx.com?subject=Briefing%20request">Email us</a></div>',
