@@ -69,7 +69,7 @@ for li in soup.select("#contact ul.rule li"):
 # Contact form. It posts to the Cloudflare Worker in worker/.
 # Leave FORM_SITEKEY empty until the Worker and Turnstile are set up: the page
 # then shows an "Email us" button instead of the form.
-FORM_SITEKEY = ""
+FORM_SITEKEY = "0x4AAAAAAGCJyxYZ4Y7c0Gbm"
 form = soup.select_one("#contact form.lrx-form")
 if form:
     script = form.find_next_sibling("script")
