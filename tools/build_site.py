@@ -66,17 +66,31 @@ for li in soup.select("#contact ul.rule li"):
     txt = li.get_text(" ", strip=True)
     if "[Registered office address]" in txt or "[number]" in txt:
         li.decompose()
-form = soup.select_one("#contact div.form")
+# Contact form. It posts to the Cloudflare Worker in worker/.
+# Leave FORM_SITEKEY empty until the Worker and Turnstile are set up: the page
+# then shows an "Email us" button instead of the form.
+FORM_SITEKEY = ""
+form = soup.select_one("#contact form.lrx-form")
 if form:
-    panel = BeautifulSoup(
-        '<div class="form" style="border-top:0;padding-top:0">'
-        '<h3>Write to us</h3>'
-        '<p>Use the button below to email us. Tell us who you are: a government or public '
-        'institution, a funder or research partner, a pharmaceutical or biotechnology company, a research institution, '
-        'or press. A briefing is with a founder. We reply within two working days.</p>'
-        '<a class="btn" href="mailto:[email removed]?subject=Briefing%20request">Email us</a></div>',
-        "html.parser")
-    form.replace_with(panel)
+    script = form.find_next_sibling("script")
+    if FORM_SITEKEY:
+        form["data-sitekey"] = FORM_SITEKEY
+    else:
+        if script:
+            script.decompose()
+        panel = BeautifulSoup(
+            '<div class="form" style="border-top:0;padding-top:0">'
+            '<h3>Write to us</h3>'
+            '<p>Use the button below to email us. Tell us who you are: a government or public '
+            'institution, a funder or research partner, a pharmaceutical or biotechnology company, a research institution, '
+            'or press. A briefing is with a founder. We reply within two working days.</p>'
+            '<a class="btn" href="mailto:[email removed]?subject=Briefing%20request">Email us</a></div>',
+            "html.parser")
+        form.replace_with(panel)
+TURNSTILE_HEAD = (
+    '<script>window.lrxTurnstileReady=function(){if(window.__lrxRender)window.__lrxRender();};</script>\n'
+    '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=lrxTurnstileReady&amp;render=explicit" async defer></script>\n'
+)
 
 # ---- images: data URIs -> files ----------------------------------------
 seen = {}
@@ -126,7 +140,7 @@ for sec in soup.select("section.page"):
 <title>{TITLES[pid]}</title>
 <meta name="description" content="{desc}">
 <link rel="stylesheet" href="assets/site.css">
-</head>
+{TURNSTILE_HEAD if (pid == "contact" and FORM_SITEKEY) else ""}</head>
 <body id="{pid}">
 {sec.decode_contents().strip()}
 </body>

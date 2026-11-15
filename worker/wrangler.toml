@@ -1,0 +1,30 @@
+# Cloudflare Worker for the LydiaRx contact form.
+# Deployed by Cloudflare straight from this folder (Workers Builds).
+#
+# Two values are set as secrets in the Cloudflare dashboard, not here:
+#   TURNSTILE_SECRET  the Turnstile widget's secret key
+#   TO_ADDRESS        the inbox that receives messages
+# Keeping TO_ADDRESS out of this file keeps it off the public repo.
+
+name = "lrx-contact"
+main = "src/index.js"
+compatibility_date = "2025-10-01"
+workers_dev = true
+
+routes = [
+  { pattern = "forms.lydiarx.ai", custom_domain = true }
+]
+
+# Lets the Worker send email through Cloudflare Email Routing on lydiarx.ai.
+# It can only deliver to addresses verified in Email Routing.
+send_email = [
+  { name = "SEND" }
+]
+
+[vars]
+FROM_ADDRESS = "website@lydiarx.ai"
+FROM_NAME = "LydiaRx website"
+ALLOWED_ORIGINS = "https://lydiarx.com,https://www.lydiarx.com,https://admin-git-lydiarx-com.github.io"
+
+[observability]
+enabled = true

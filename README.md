@@ -6,6 +6,7 @@ The public LydiaRx website, built from the website v3 prototype (29 October 2026
 
 - `site/`: the website itself. Plain HTML pages with one shared stylesheet (`site/assets/site.css`) and images in `site/assets/img/`. No build step is needed.
 - `.github/workflows/pages.yml`: publishes `site/` to GitHub Pages every time a change lands on `main`.
+- `worker/`: the Cloudflare Worker that will handle the Contact page form. Setup steps are in `worker/README.md`.
 - `tools/build_site.py`: the script that split the single-file prototype into these pages. It's kept for reference only; edit the pages in `site/` directly from now on.
 
 ## Pages
@@ -38,4 +39,4 @@ These items from the prototype were left out because they weren't ready to publi
 - the prototype's internal build notes and amber publish-gate notes
 - the registered office address, VAT number and telephone number (placeholders in the prototype)
 - links to the Privacy Policy, Cookie Policy and Terms of Use, which haven't been written yet
-- the contact form, which had no back end; the Contact page now has an "Email us" button instead
+- the contact form, which had no back end; the Contact page has an "Email us" button until the form is switched on (see `worker/README.md`)

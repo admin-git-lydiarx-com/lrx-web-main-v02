@@ -152,3 +152,19 @@ html{ scroll-behavior:smooth; }
 a.link{ text-decoration-color:var(--lav); text-decoration-thickness:2px; }
 .pgnav a.on .pg-node{ box-shadow:0 0 0 5px rgba(140,132,200,.32); }
 ::selection{ background:rgba(140,132,200,.32); }
+
+.lrx-form .in{ display:block; width:100%; box-sizing:border-box; height:44px; padding:9px 12px; font:inherit; font-size:1em; color:var(--ink); border-radius:4px; }
+.lrx-form textarea.in{ height:150px; resize:vertical; line-height:1.5; }
+.lrx-form select.in{ appearance:auto; }
+.lrx-form .in:focus{ outline:none; border-color:var(--teal); box-shadow:0 0 0 3px rgba(140,132,200,.35); }
+.lrx-form .opt{ font-weight:400; color:var(--grey); }
+.lrx-form .hp{ position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
+.lrx-form .ts-slot{ margin-top:16px; min-height:0; }
+.lrx-form .form-note{ margin-top:12px; }
+.lrx-form .btn{ cursor:pointer; font:inherit; font-weight:700; margin-top:6px; }
+.lrx-form .btn[disabled]{ opacity:.6; cursor:wait; }
+.lrx-form .form-status{ margin:12px 0 0; font-weight:600; min-height:1.4em; }
+.lrx-form .form-status.ok{ color:var(--teal); }
+.lrx-form .form-status.err{ color:#B3261E; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .lrx-form .form-status.err{ color:#F2B8B5; } }
+:root[data-theme="dark"] .lrx-form .form-status.err{ color:#F2B8B5; }
