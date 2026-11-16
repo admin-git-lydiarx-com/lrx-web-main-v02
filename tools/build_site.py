@@ -145,8 +145,10 @@ for a in soup.find_all("a"):
     if a.get("href"):
         a["href"] = fix(a["href"])
 
-ICONS = ('<link rel="icon" href="assets/favicon.ico">\n'
-         '<link rel="apple-touch-icon" href="assets/192.png">\n'
+ICONS = ('<link rel="icon" href="assets/favicon.ico" sizes="any">\n'
+         '<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">\n'
+         '<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">\n'
+         '<meta name="theme-color" content="#0D2438">\n'
          '<link rel="manifest" href="site.webmanifest">\n'
          '<!-- Cloudflare Web Analytics -->'
          '<script type=\'module\' src=\'https://static.cloudflareinsights.com/beacon.min.js\' '
