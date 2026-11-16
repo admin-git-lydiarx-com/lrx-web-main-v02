@@ -168,3 +168,12 @@ a.link{ text-decoration-color:var(--lav); text-decoration-thickness:2px; }
 .lrx-form .form-status.err{ color:#B3261E; }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .lrx-form .form-status.err{ color:#F2B8B5; } }
 :root[data-theme="dark"] .lrx-form .form-status.err{ color:#F2B8B5; }
+
+/* Legal pages */
+.sec > .wrap.legal{ display:block !important; padding-top:0; padding-bottom:24px; }
+.legal > *{ max-width:780px; }
+.legal h1{ margin-bottom:8px; }
+.legal h3{ margin:30px 0 8px; }
+.legal p, .legal li{ line-height:1.6; }
+.legal ul{ margin:8px 0 8px 1.4em; padding:0; }
+.legal li{ margin:6px 0; }

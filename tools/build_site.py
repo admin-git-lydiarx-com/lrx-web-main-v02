@@ -32,12 +32,23 @@ for sec in soup.select("section.page"):
 
 os.makedirs(os.path.join(out, "assets", "img"), exist_ok=True)
 
+LEGAL_CSS = """
+/* Legal pages */
+.sec > .wrap.legal{ display:block !important; padding-top:0; padding-bottom:24px; }
+.legal > *{ max-width:780px; }
+.legal h1{ margin-bottom:8px; }
+.legal h3{ margin:30px 0 8px; }
+.legal p, .legal li{ line-height:1.6; }
+.legal ul{ margin:8px 0 8px 1.4em; padding:0; }
+.legal li{ margin:6px 0; }
+"""
+
 # ---- shared stylesheet -------------------------------------------------
 style = soup.find("style")
 css = style.string
 css = css.replace(".page{ display:none; } .page.active{ display:block; }", "")
 open(os.path.join(out, "assets", "site.css"), "w", encoding="utf-8").write(
-    "/* LydiaRx site styles, derived from the website v3 prototype */\n" + css.strip() + "\n")
+    "/* LydiaRx site styles, derived from the website v3 prototype */\n" + css.strip() + "\n" + LEGAL_CSS)
 
 # ---- strip prototype-only material ------------------------------------
 for el in soup.select("div.slate"):
@@ -57,9 +68,18 @@ for div in soup.select("footer.foot div"):
     for t in div.find_all(string=True):
         if "[address]" in t or "[VAT" in t:
             t.replace_with(re.sub(r"\s*Registered office: \[address\]\.\s*\[VAT number, if registered\.\]", "", t))
+FOOTER_LINKS = {"Privacy Policy": "privacy-policy.html", "Terms of Use": "terms-of-service.html"}
 for a in soup.select("footer.foot a"):
     if a.get("href") == "#":
-        a.decompose()
+        label = a.get_text(strip=True)
+        if label in FOOTER_LINKS:
+            a["href"] = FOOTER_LINKS[label]
+            if label == "Terms of Use":
+                ms = soup.new_tag("a", href="modern-slavery.html")
+                ms.string = "Modern Slavery Statement"
+                a.insert_after(ms)
+        else:
+            a.decompose()
 
 # Contact: remove placeholder rows; replace the non-working form with an email panel
 for li in soup.select("#contact ul.rule li"):
@@ -126,6 +146,10 @@ for a in soup.find_all("a"):
     if a.get("href"):
         a["href"] = fix(a["href"])
 
+ICONS = ('<link rel="icon" href="assets/favicon.ico">\n'
+         '<link rel="apple-touch-icon" href="assets/192.png">\n'
+         '<link rel="manifest" href="site.webmanifest">\n')
+
 # ---- write pages --------------------------------------------------------
 desc = soup.find("meta", attrs={"name": "description"})["content"]
 for sec in soup.select("section.page"):
@@ -140,12 +164,70 @@ for sec in soup.select("section.page"):
 <title>{TITLES[pid]}</title>
 <meta name="description" content="{desc}">
 <link rel="stylesheet" href="assets/site.css">
-{TURNSTILE_HEAD if (pid == "contact" and FORM_SITEKEY) else ""}</head>
+{ICONS}{TURNSTILE_HEAD if (pid == "contact" and FORM_SITEKEY) else ""}</head>
 <body id="{pid}">
 {sec.decode_contents().strip()}
 </body>
 </html>
 """
     open(os.path.join(out, FILE[pid]), "w", encoding="utf-8").write(html)
+
+# ---- legal pages (content carried over from the previous site) --------
+LEGAL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "legal")
+first = BeautifulSoup(open(os.path.join(out, "news.html"), encoding="utf-8").read(), "html.parser")
+header, footer = str(first.header), str(first.footer)
+for name in ("privacy-policy", "terms-of-service", "modern-slavery"):
+    txt = open(os.path.join(LEGAL_DIR, name + ".html"), encoding="utf-8").read()
+    title = re.search(r"<!-- title: (.*?) -->", txt).group(1)
+    updated = re.search(r"<!-- updated: (.*?) -->", txt).group(1)
+    content = re.sub(r"<!--.*?-->\n?", "", txt).strip()
+    html = f"""<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title} | LydiaRx</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/site.css">
+{ICONS}</head>
+<body id="legal">
+{header}
+<div class="sec"><div class="wrap legal">
+<h1>{title}</h1>
+<p class="small muted">{updated}</p>
+{content}
+</div></div>
+{footer}
+</body>
+</html>
+"""
+    open(os.path.join(out, name + ".html"), "w", encoding="utf-8").write(html)
+
+# ---- redirects from the previous site's addresses ---------------------
+REDIRECTS = {
+    "legal/privacy-policy.html": "privacy-policy.html",
+    "legal/terms-of-service.html": "terms-of-service.html",
+    "legal/modern-slavery.html": "modern-slavery.html",
+    "news/index.html": "news.html",
+    "products/ai-studio.html": "platform.html",
+    "products/demo.html": "platform.html",
+    "products/epi.html": "platform.html",
+    "products/track-and-trace.html": "platform.html",
+    "services/csv.html": "platform.html",
+    "services/data-analytics.html": "platform.html",
+    "services/it-infrastructure.html": "platform.html",
+    "venture-studio/index.html": "about.html",
+    "venture-studio/investment-thesis.html": "about.html",
+    "venture-studio/portfolio.html": "about.html",
+}
+for old, new in REDIRECTS.items():
+    depth = old.count("/")
+    target = "../" * depth + new
+    os.makedirs(os.path.join(out, os.path.dirname(old)), exist_ok=True)
+    open(os.path.join(out, old), "w", encoding="utf-8").write(
+        f'<!doctype html>\n<html lang="en-GB"><head><meta charset="utf-8">'
+        f'<meta name="robots" content="noindex"><title>LydiaRx</title>'
+        f'<meta http-equiv="refresh" content="0; url={target}"></head>'
+        f'<body><p>This page has moved. <a href="{target}">Continue to LydiaRx</a>.</p></body></html>\n')
 
 print("pages:", len(soup.select("section.page")), "images:", len(seen))
