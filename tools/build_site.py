@@ -101,10 +101,9 @@ if form:
         panel = BeautifulSoup(
             '<div class="form" style="border-top:0;padding-top:0">'
             '<h3>Write to us</h3>'
-            '<p>Use the button below to email us. Tell us who you are: a government or public '
-            'institution, a funder or research partner, a pharmaceutical or biotechnology company, a research institution, '
-            'or press. A briefing is with a founder. We reply within two working days.</p>'
-            '<a class="btn" href="mailto:[email removed]?subject=Briefing%20request">Email us</a></div>',
+            '<p>Tell us who you are: a government or public institution, a funder or research partner, '
+            'a pharmaceutical or biotechnology company, a research institution, or press. '
+            'The contact form is being set up. Please check back soon.</p></div>',
             "html.parser")
         form.replace_with(panel)
 TURNSTILE_HEAD = (
