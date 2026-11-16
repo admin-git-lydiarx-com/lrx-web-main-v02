@@ -147,7 +147,11 @@ for a in soup.find_all("a"):
 
 ICONS = ('<link rel="icon" href="assets/favicon.ico">\n'
          '<link rel="apple-touch-icon" href="assets/192.png">\n'
-         '<link rel="manifest" href="site.webmanifest">\n')
+         '<link rel="manifest" href="site.webmanifest">\n'
+         '<!-- Cloudflare Web Analytics -->'
+         '<script type=\'module\' src=\'https://static.cloudflareinsights.com/beacon.min.js\' '
+         'data-cf-beacon=\'{"token": "fddc1a71b5e14ee184cf500cac09ab13"}\'></script>'
+         '<!-- End Cloudflare Web Analytics -->\n')
 
 # ---- write pages --------------------------------------------------------
 desc = soup.find("meta", attrs={"name": "description"})["content"]
